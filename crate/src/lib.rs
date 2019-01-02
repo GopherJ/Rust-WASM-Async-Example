@@ -1,7 +1,5 @@
 #[macro_use]
 extern crate cfg_if;
-extern crate web_sys;
-extern crate wasm_bindgen;
 
 use wasm_bindgen::prelude::*;
 
@@ -34,6 +32,8 @@ pub fn run() -> Result<(), JsValue> {
 
     let window = web_sys::window().expect("should have a Window");
     let document = window.document().expect("should have a Document");
+
+    web_sys::console::log_1(&"In Rust".into());
 
     let p: web_sys::Node = document.create_element("p")?.into();
     p.set_text_content(Some("Hello from Rust, WebAssembly, and Webpack!"));
