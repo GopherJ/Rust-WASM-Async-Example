@@ -9,6 +9,10 @@ use js_sys::Promise;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::future_to_promise;
 
+use crate::{
+    sleep::sleep,
+};
+
 cfg_if! {
     // When the `console_error_panic_hook` feature is enabled, we can call the
     // `set_panic_hook` function to get better error messages if we ever panic.
@@ -49,8 +53,6 @@ pub fn run() -> impl Future<Item=(), Error=JsValue> {
         (window, document)
     })
     .and_then(|x| {
-        use self::sleep::sleep;
-
         sleep(1000).map(move |_| x)
     })
     .and_then(|(window, document)| FutureResult::from(try {
