@@ -1,8 +1,6 @@
 Promise.resolve().then(async () => {
   const module = await import("../crate/pkg");
-  module.run();
-
   console.log("begin");
-  await module.sleep(1000);
+  await module.run();
   console.log("end");
 });
