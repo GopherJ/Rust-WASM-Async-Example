@@ -41,18 +41,18 @@ pub fn run() -> impl Future<Item=(), Error=JsValue> {
         web_sys::console::log_1(&"In Rust".into());
 
         set_panic_hook();
-        ()
-    })
-    .and_then(|_| {
-        use self::sleep::sleep;
-
-        sleep(1000)
-    })
-    .and_then(|_| FutureResult::from(try {
-        foo();
 
         let window = web_sys::window().expect("should have a Window");
         let document = window.document().expect("should have a Document");
+        (window, document)
+    })
+    .and_then(|x| {
+        use self::sleep::sleep;
+
+        sleep(1000).map(move |_| x)
+    })
+    .and_then(|(window, document)| FutureResult::from(try {
+        foo();
 
         let p: web_sys::Node = document.create_element("p")?.into();
         p.set_text_content(Some("Hello from Rust, WebAssembly, and Webpack!"));
