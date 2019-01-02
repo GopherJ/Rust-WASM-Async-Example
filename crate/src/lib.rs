@@ -25,6 +25,11 @@ cfg_if! {
     }
 }
 
+#[wasm_bindgen(module = "../helper")]
+extern "C" {
+    pub fn foo();
+}
+
 // Called by our JS entry point to run the example.
 #[wasm_bindgen]
 pub fn run() -> Result<(), JsValue> {
@@ -34,6 +39,7 @@ pub fn run() -> Result<(), JsValue> {
     let document = window.document().expect("should have a Document");
 
     web_sys::console::log_1(&"In Rust".into());
+    foo();
 
     let p: web_sys::Node = document.create_element("p")?.into();
     p.set_text_content(Some("Hello from Rust, WebAssembly, and Webpack!"));
