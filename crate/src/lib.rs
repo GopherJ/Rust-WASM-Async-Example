@@ -1,4 +1,4 @@
-#![feature(async_await, await_macro, futures_api, try_blocks, type_ascription)]
+#![feature(async_await, await_macro, futures_api, type_ascription)]
 
 #![deny(dead_code, unused_imports)]
 
@@ -40,27 +40,25 @@ extern "C" {
 }
 
 pub async fn run() -> Result<(), JsValue> {
-    try {
-        web_sys::console::log_1(&"In Rust".into());
+    web_sys::console::log_1(&"In Rust".into());
 
-        set_panic_hook();
+    set_panic_hook();
 
-        let window = web_sys::window().expect("should have a Window");
-        let document = window.document().expect("should have a Document");
+    let window = web_sys::window().expect("should have a Window");
+    let document = window.document().expect("should have a Document");
 
-        await!(sleep(1000))?;
+    await!(sleep(1000))?;
 
-        greet();
+    greet();
 
-        let p: web_sys::Node = document.create_element("p")?.into();
-        p.set_text_content(Some("Hello from Rust, WebAssembly, and Webpack!"));
+    let p: web_sys::Node = document.create_element("p")?.into();
+    p.set_text_content(Some("Hello from Rust, WebAssembly, and Webpack!"));
 
-        let body = document.body().expect("should have a body");
-        let body: &web_sys::Node = body.as_ref();
-        body.append_child(&p)?;
+    let body = document.body().expect("should have a body");
+    let body: &web_sys::Node = body.as_ref();
+    body.append_child(&p)?;
 
-        ()
-    }
+    Ok(())
 }
 
 // Called by our JS entry point to run the example.
