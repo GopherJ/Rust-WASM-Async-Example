@@ -1,5 +1,7 @@
 #![feature(async_await, await_macro, futures_api, try_blocks, type_ascription)]
 
+#![deny(dead_code, unused_imports)]
+
 #[macro_use]
 extern crate cfg_if;
 
@@ -36,6 +38,7 @@ cfg_if! {
     }
 }
 
+#[allow(dead_code)]
 mod compat;
 mod sleep;
 
