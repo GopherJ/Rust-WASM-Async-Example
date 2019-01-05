@@ -34,7 +34,7 @@ cfg_if! {
 mod compat;
 mod sleep;
 
-#[wasm_bindgen(module = "../helper")]
+#[wasm_bindgen(module = "../../js/helper")]
 extern "C" {
     pub fn greet();
 }
