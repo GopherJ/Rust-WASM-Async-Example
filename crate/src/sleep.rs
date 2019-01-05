@@ -1,5 +1,3 @@
-use std::future::Future;
-
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(module = "../helper")]
@@ -7,15 +5,11 @@ extern "C" {
     fn _sleep(millis: u32) -> js_sys::Promise;
 }
 
-pub fn sleep(millis: u32) -> impl Future<Output=Result<(), JsValue>> {
-    use futures01::future::Future;
-    use wasm_bindgen_futures::JsFuture;
-    use crate::compat::forward::IntoAwaitable;
+pub async fn sleep(millis: u32) -> Result<(), JsValue> {
+    use crate::js_compat::promise_to_future;
 
-    JsFuture::from(_sleep(millis))
-        .map(|_| ())
-        .map_err(|_| unreachable!())
-        .into_awaitable()
+    await!(promise_to_future(_sleep(millis)))?;
+    Ok(())
 }
 
 #[wasm_bindgen(js_name = sleep)]
