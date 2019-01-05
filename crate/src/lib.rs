@@ -5,16 +5,9 @@
 #[macro_use]
 extern crate cfg_if;
 
-use futures01::future::Future;
-
-use js_sys::Promise;
 use wasm_bindgen::prelude::*;
-use wasm_bindgen_futures::future_to_promise;
 
-use crate::{
-    compat::backward::Compat,
-    sleep::sleep,
-};
+use crate::sleep::sleep;
 
 cfg_if! {
     // When the `console_error_panic_hook` feature is enabled, we can call the
@@ -73,7 +66,11 @@ pub async fn run() -> Result<(), JsValue> {
 
 // Called by our JS entry point to run the example.
 #[wasm_bindgen(js_name = run)]
-pub fn run_js() -> Promise {
+pub fn run_js() -> js_sys::Promise {
+    use futures01::future::Future;
+    use crate::compat::backward::Compat;
+    use wasm_bindgen_futures::future_to_promise;
+
     let future = Compat::new(run());
     let future = future.map(|_| JsValue::UNDEFINED);
     future_to_promise(future)
