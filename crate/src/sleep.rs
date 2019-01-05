@@ -20,11 +20,10 @@ pub fn sleep(millis: u32) -> impl Future<Output=Result<(), JsValue>> {
 
 #[wasm_bindgen(js_name = sleep)]
 pub fn sleep_js(millis: u32) -> js_sys::Promise {
-    use futures01::future::Future;
-    use crate::compat::backward::Compat;
-    use wasm_bindgen_futures::future_to_promise;
+    use crate::js_compat::future_to_promise;
 
-    let future = Compat::new(sleep(millis));
-    let future = future.map(|_| JsValue::UNDEFINED);
-    future_to_promise(future)
+    future_to_promise(async move {
+        await!(sleep(millis))?;
+        Ok(JsValue::UNDEFINED)
+    })
 }

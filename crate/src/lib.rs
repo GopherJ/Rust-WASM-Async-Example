@@ -33,6 +33,7 @@ cfg_if! {
 
 #[allow(dead_code)]
 mod compat;
+mod js_compat;
 mod sleep;
 
 #[wasm_bindgen(module = "../helper")]
@@ -67,11 +68,10 @@ pub async fn run() -> Result<(), JsValue> {
 // Called by our JS entry point to run the example.
 #[wasm_bindgen(js_name = run)]
 pub fn run_js() -> js_sys::Promise {
-    use futures01::future::Future;
-    use crate::compat::backward::Compat;
-    use wasm_bindgen_futures::future_to_promise;
+    use crate::js_compat::future_to_promise;
 
-    let future = Compat::new(run());
-    let future = future.map(|_| JsValue::UNDEFINED);
-    future_to_promise(future)
+    future_to_promise(async move {
+        await!(run())?;
+        Ok(JsValue::UNDEFINED)
+    })
 }
