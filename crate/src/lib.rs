@@ -36,7 +36,7 @@ mod sleep;
 
 #[wasm_bindgen(module = "../helper")]
 extern "C" {
-    pub fn foo();
+    pub fn greet();
 }
 
 pub async fn run() -> Result<(), JsValue> {
@@ -50,7 +50,7 @@ pub async fn run() -> Result<(), JsValue> {
 
         await!(sleep(1000))?;
 
-        foo();
+        greet();
 
         let p: web_sys::Node = document.create_element("p")?.into();
         p.set_text_content(Some("Hello from Rust, WebAssembly, and Webpack!"));
