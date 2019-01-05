@@ -7,17 +7,18 @@ use wasm_bindgen_futures::{
     future_to_promise as _future_to_promise,
 };
 
-use crate::compat::{
-    backward::Compat,
-    forward::IntoAwaitable,
+use futures03::compat::{
+    Compat,
+    Compat01As03,
 };
 
 pub fn future_to_promise<F>(future: F) -> Promise
-        where F: Future<Output=Result<JsValue, JsValue>> + 'static {
+        where F: Future<Output=Result<JsValue, JsValue>> + std::marker::Unpin + 'static {
     let future = Compat::new(future);
     _future_to_promise(future)
 }
 
 pub fn promise_to_future(promise: Promise) -> impl Future<Output=Result<JsValue, JsValue>> {
-    JsFuture::from(promise).into_awaitable()
+    let future01 = JsFuture::from(promise);
+    Compat01As03::new(future01)
 }

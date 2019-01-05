@@ -15,6 +15,7 @@ crate-type = ["cdylib"]
 [dependencies]
 cfg-if = "0.1.5"
 futures01 = { package = "futures", version = "0.1" }
+futures03 = { package = "futures-preview", version = "0.3.0-alpha.11", features = ["compat"] }
 js-sys = "0.3.6"
 wasm-bindgen = "0.2.25"
 wasm-bindgen-futures = "0.3.6"

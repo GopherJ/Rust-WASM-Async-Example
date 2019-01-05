@@ -31,9 +31,7 @@ cfg_if! {
     }
 }
 
-#[allow(dead_code)]
 mod compat;
-mod js_compat;
 mod sleep;
 
 #[wasm_bindgen(module = "../helper")]
@@ -68,10 +66,11 @@ pub async fn run() -> Result<(), JsValue> {
 // Called by our JS entry point to run the example.
 #[wasm_bindgen(js_name = run)]
 pub fn run_js() -> js_sys::Promise {
-    use crate::js_compat::future_to_promise;
+    use crate::compat::future_to_promise;
+    use futures03::future::FutureExt;
 
     future_to_promise(async move {
         await!(run())?;
         Ok(JsValue::UNDEFINED)
-    })
+    }.boxed())
 }

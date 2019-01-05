@@ -1,7 +1,7 @@
 use wasm_bindgen::prelude::*;
 
 pub async fn sleep(millis: i32) -> Result<(), JsValue> {
-    use crate::js_compat::promise_to_future;
+    use crate::compat::promise_to_future;
 
     let promise = js_sys::Promise::new(&mut move |resolve, _| {
         let window = web_sys::window().expect("should have a Window");
@@ -16,10 +16,11 @@ pub async fn sleep(millis: i32) -> Result<(), JsValue> {
 
 #[wasm_bindgen(js_name = sleep)]
 pub fn sleep_js(millis: i32) -> js_sys::Promise {
-    use crate::js_compat::future_to_promise;
+    use crate::compat::future_to_promise;
+    use futures03::future::FutureExt;
 
     future_to_promise(async move {
         await!(sleep(millis))?;
         Ok(JsValue::UNDEFINED)
-    })
+    }.boxed())
 }
