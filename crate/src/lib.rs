@@ -1,4 +1,4 @@
-#![feature(async_await, await_macro, futures_api, type_ascription)]
+#![feature(async_await, await_macro, futures_api)]
 
 #![deny(dead_code, unused_imports)]
 
