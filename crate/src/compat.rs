@@ -13,7 +13,7 @@ use futures::compat::{
 };
 
 pub fn future_to_promise<F>(future: F) -> Promise
-        where F: Future<Output=Result<JsValue, JsValue>> + std::marker::Unpin + 'static {
+        where F: Future<Output=Result<JsValue, JsValue>> + Unpin + 'static {
     let future = Compat::new(future);
     _future_to_promise(future)
 }
