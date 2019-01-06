@@ -7,7 +7,7 @@ use wasm_bindgen_futures::{
     future_to_promise as _future_to_promise,
 };
 
-use futures03::compat::{
+use futures::compat::{
     Compat,
     Compat01As03,
 };

@@ -76,7 +76,7 @@ pub async fn run() -> Result<(), JsValue> {
 #[wasm_bindgen(js_name = run)]
 pub fn run_js() -> js_sys::Promise {
     use crate::compat::future_to_promise;
-    use futures03::future::FutureExt;
+    use futures::future::FutureExt;
 
     future_to_promise(async move {
         await!(run())?;
