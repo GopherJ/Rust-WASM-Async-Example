@@ -7,7 +7,7 @@ pub async fn sleep(millis: i32) -> Result<(), JsValue> {
         let window = web_sys::window().expect("should have a Window");
         window.set_timeout_with_callback_and_timeout_and_arguments_0(
             &resolve, millis
-        );
+        ).expect("don't expect error on setTimeout()");
     });
 
     await!(promise_to_future(promise))?;

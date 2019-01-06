@@ -1,6 +1,5 @@
 #![feature(async_await, await_macro, futures_api)]
-
-#![deny(dead_code, unused_imports)]
+#![deny(warnings)]
 
 #[macro_use]
 extern crate cfg_if;
